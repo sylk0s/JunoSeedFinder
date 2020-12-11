@@ -12,18 +12,47 @@ public class Main {
 
         BufferedReader objReader = new BufferedReader(new FileReader(fileName));
 
-        String strCurrentLine;
-        List<RegionSeed> seeds = new ArrayList<>();
-        while ((strCurrentLine = objReader.readLine()) != null) {
-            seeds.add(new RegionSeed(Long.parseLong(strCurrentLine)));
-        }
 
+        String strCurrentLine;
+        while ((strCurrentLine = objReader.readLine()) != null) {
+            RegionSeeds regionSeed = new RegionSeeds(Long.parseLong(strCurrentLine));
+            regionSeed.getStructureSeeds().parallelStream().forEach( structureSeed -> {
+                structureSeed.getWorldSeeds().parallelStream().forEach(worldSeed -> {
+                    if(worldSeed.evaluate()) {
+                        ResultGenerator.simpleOutput(worldSeed);
+                    }
+                });
+            });
+        }
+/*
         seeds.parallelStream().forEach( regionSeed -> {
             regionSeed.getStructureSeeds().parallelStream().forEach( structureSeed -> {
                 structureSeed.getWorldSeeds().parallelStream().forEach(worldSeed -> {
-                    System.out.println(worldSeed);
+                    if(worldSeed.evaluate()) {
+                        ResultGenerator.simpleOutput(worldSeed);
+                    }
                 });
             });
         });
+    }
+}
+         */ /*
+
+        List<RegionSeeds> seeds = new ArrayList<>();
+        seeds.add(new RegionSeeds(Long.parseLong(objReader.readLine())));
+        seeds.add(new RegionSeeds(Long.parseLong(objReader.readLine())));
+        seeds.add(new RegionSeeds(Long.parseLong(objReader.readLine())));
+        seeds.add(new RegionSeeds(Long.parseLong(objReader.readLine())));
+*/ /*
+        seeds.parallelStream().forEach( regionSeed -> {
+            regionSeed.getStructureSeeds().parallelStream().forEach( structureSeed -> {
+                structureSeed.getWorldSeeds().parallelStream().forEach(worldSeed -> {
+                    if(worldSeed.evaluate()) {
+                        ResultGenerator.simpleOutput(worldSeed);
+                    }
+                });
+            });
+        });
+        */
     }
 }
