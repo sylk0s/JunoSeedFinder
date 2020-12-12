@@ -1,10 +1,6 @@
 package SeedFinder;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -12,47 +8,19 @@ public class Main {
 
         BufferedReader objReader = new BufferedReader(new FileReader(fileName));
 
-
         String strCurrentLine;
         while ((strCurrentLine = objReader.readLine()) != null) {
             RegionSeeds regionSeed = new RegionSeeds(Long.parseLong(strCurrentLine));
-            regionSeed.getStructureSeeds().parallelStream().forEach( structureSeed -> {
-                structureSeed.getWorldSeeds().parallelStream().forEach(worldSeed -> {
-                    if(worldSeed.evaluate()) {
+
+            regionSeed.getStructureSeeds().parallelStream().forEach(structureSeed -> {
+                structureSeed.getWorldSeeds().parallelStream().filter(WorldSeed::evaluate).forEach(worldSeed -> {
+                    try {
                         ResultGenerator.simpleOutput(worldSeed);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 });
             });
         }
-/*
-        seeds.parallelStream().forEach( regionSeed -> {
-            regionSeed.getStructureSeeds().parallelStream().forEach( structureSeed -> {
-                structureSeed.getWorldSeeds().parallelStream().forEach(worldSeed -> {
-                    if(worldSeed.evaluate()) {
-                        ResultGenerator.simpleOutput(worldSeed);
-                    }
-                });
-            });
-        });
-    }
-}
-         */ /*
-
-        List<RegionSeeds> seeds = new ArrayList<>();
-        seeds.add(new RegionSeeds(Long.parseLong(objReader.readLine())));
-        seeds.add(new RegionSeeds(Long.parseLong(objReader.readLine())));
-        seeds.add(new RegionSeeds(Long.parseLong(objReader.readLine())));
-        seeds.add(new RegionSeeds(Long.parseLong(objReader.readLine())));
-*/ /*
-        seeds.parallelStream().forEach( regionSeed -> {
-            regionSeed.getStructureSeeds().parallelStream().forEach( structureSeed -> {
-                structureSeed.getWorldSeeds().parallelStream().forEach(worldSeed -> {
-                    if(worldSeed.evaluate()) {
-                        ResultGenerator.simpleOutput(worldSeed);
-                    }
-                });
-            });
-        });
-        */
     }
 }

@@ -9,8 +9,7 @@ import java.util.List;
 
 public class RegionSeeds {
     private Long seed;
-    private Long iteration;
-    private static final int TWELVE_DISTANCE = 16;
+    private static final int TWELVE_DISTANCE = 6;
     private final SwampHut SWAMP_HUT = new SwampHut(MCVersion.v1_12_2);
     List<StructureSeed> structureSeeds = new ArrayList<>();
 
